@@ -8,9 +8,10 @@ the following are the exported sub programs:
 This defines the barber pole and gives it a name. This must be called before any other sub programs in this library can be executed for this spinner.
  
 *note:*
-new_spinner() does not show the spinner, it just reserves the name and co-ordinates for the spinner.
 
-* hz = horizontal position, ppixels from the left of the view.
+new_spinner() does not show the spinner, it just reserves the name and co-ordinates for the spinner. hz and vt difine the top left corner of the spinner.
+
+* hz = horizontal position, pixels from the left of the view.
 
 * vt = virtival position, pixels from the top of the view.
 
@@ -43,12 +44,14 @@ r=0 g=80 b=225 r1=245 g1=245 b1=245
 
 Turns on the spinner display for spinner named name$
 
-*note:* the barber pole will not be displayed, just a blank spinner. one must spin the spinner to dieplay the barber pole.
+*note:*
+
+The barber pole will not be displayed, just a blank spinner. One must spin the spinner to dieplay the barber pole.
 
 
 **spinall()**
 
-Spins all tof your spinners.
+Spins all of your spinners.
 
 **spin(name$)**
 
