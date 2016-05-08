@@ -70,7 +70,7 @@ One typically adds the spinner to the view when the view is created:
 	new_spinner(10,80,10,80,"MySpinner", "MyView")
 	
 
-This is where the color or spin directionould be set if one needs to change it.
+This is where the color or spin direction should be set if one needs to change it.
 
 
 When your process starts, set a flag variable to and display the spinner:
