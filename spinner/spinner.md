@@ -62,3 +62,29 @@ Only spin the spinner named name$
 Removes the spinner from the view.
 
 
+## usage
+
+One typically adds the spinner to the view when the view is created:
+
+	VIEW 20,20 TO 120,120, "MyView", "MainWindow"
+	new_spinner(10,80,10,80,"MySpinner", "MyView")
+	
+
+This is where the color or spin directionould be set if one needs to change it.
+
+
+When your process starts, set a flag variable to and display the spinner:
+
+	
+	display_spinner("MySpinner")
+	spin=true
+	my_cool_process()
+	spin=false
+	hide_spinner("MySpinner")
+
+Then in the main message loop of your program add:
+
+	if spin spinall()
+
+Now while my_cool_process() is running, the spinner will show on the bottom of MyView.
+

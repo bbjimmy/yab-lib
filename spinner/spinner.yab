@@ -1,4 +1,4 @@
-export sub new_spinner(hz,vt,ht,width, name$, view$)
+export sub new_spinner(hz,vt,width,ht, name$, view$)
 static number
 number = number+1
 dim spinner(number,5)
