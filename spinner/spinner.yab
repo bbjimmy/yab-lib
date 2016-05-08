@@ -1,0 +1,160 @@
+export sub new_spinner(hz,vt,ht,width, name$, view$)
+static number
+number = number+1
+dim spinner(number,5)
+dim spinnername$(number,2)
+
+spinner(number,1)=hz
+spinner(number,2)=vt
+spinner(number,3)=ht
+if spinner(number,3)=0 spinner(number,3)=1
+spinner(number,4)=0
+spinner(number,5)=width
+spinnername$(number,1)=name$
+spinnername$(number,2)=view$
+dim colors(2,3)
+colors (1,1)=0
+colors (1,2) = 80
+colors(1,3)=225
+colors(2,1)=245
+colors(2,2)=245
+colors(2,3)=245
+end sub
+
+
+
+export sub display_spinner(name$)
+local x,i.number,view$, length,width
+x=arraysize(spinnername$(),1)
+for i=1 to x
+if (spinnername$(i,1)=name$) number = i
+next
+
+view$=spinnername$(number,2)
+length=spinner(number,3)
+width=spinner(number,5)
+
+
+
+	view spinner(number,1),spinner(number,2) to spinner(number,1)+length,spinner(number,2)+width, name$+"_view", view$
+	//print spinner(number,1),spinner(number,2),spinner(number,1)+length,spinner(number,2)+width
+	draw set 0,"HighSolidFill"
+	draw set "highcolor",180,180,180, name$+"_view"
+	draw rect 0,0 to length,width, name$+"_view"
+	draw set "highcolor",225,225,235, name$+"_view"
+	draw line 0,width to length,width, name$+"_view"
+	draw line length,0 to length,width , name$+"_view"
+	draw set "highcolor",150,150,150, name$+"_view"	
+	draw line 0,0 to 0,width , name$+"_view"
+	draw line 1,0 to length-1,0 , name$+"_view"
+	CANVAS 2,2 to length-2,width-2,  name$, name$+"_view"
+	
+
+	
+	
+
+end sub
+export sub spinner_colors(r,g,b,r1,g1,b1)
+colors (1,1)=r
+colors (1,2) = g
+colors(1,3)=b
+colors(2,1)=r1
+colors(2,2)=g1
+colors(2,3)=b1
+end sub
+
+
+
+export sub spinner_set(lr,name$)
+local x,i,number
+x=arraysize(spinnername$(),1)
+for i=1 to x
+if (spinnername$(i,1)=name$) number = i
+next
+spinner(number,4)=lr
+return
+end sub
+
+
+
+export sub hide_spinner(name$)
+if (VIEW GET name$+"_view", "Exists") view remove name$+"_view"
+end sub
+
+
+export sub spinall()
+x=arraysize(spinnername$(),1)
+for i=1 to x
+spin(spinnername$(i,1))
+next
+end sub
+
+
+
+export sub spin(name$)
+
+local i,length,x,width, mx,ii
+ii=VIEW GET name$, "Exists"
+if ii = 0 return
+x=arraysize(spinnername$(),1)
+for i=1 to x
+if (spinnername$(i,1)=name$) number = i
+next
+length=spinner(number,3)
+width=spinner(number,5)
+
+p = spinner(number,0)
+
+
+mx=7
+
+switch p
+	case 0	
+		pattern$= "030060120240225195135015"
+	break
+	case 1
+		pattern$ = "060120240225195135015030"
+	break
+	case 2
+		pattern$ = "120240225195135015030060"
+	break
+	case 3
+		pattern$ = "240225195135015030060120"
+	break
+	case 4
+		pattern$ = "225195135015030060120240"
+	break
+	case 5
+		pattern$ = "195135015030060120240225"
+	break
+	case 6
+		pattern$ = "135015030060120240225195"
+	break
+	case 7
+		pattern$ = "015030060120240225195135"
+	break
+end switch
+
+		
+draw set 0, pattern$
+draw set "highcolor", colors(1,1),colors (1,2),colors(1,3), name$
+draw set "lowcolor", colors(2,1),colors(2,2),colors(2,3), name$		
+if spinner(number,4) = 0 then // spin to the right or up
+ 	draw rect 0,0 to length-4, width-2, name$
+ 	p=p-1
+	if p<0 p=mx
+ 	spinner(number,0)=p	
+else
+	draw rect 0,0 to length-4, width-2, name$
+	p=p+1
+	if p>mx p=0
+	spinner(number,0)=p	
+endif	
+
+
+
+end sub
+
+
+
+
