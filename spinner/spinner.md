@@ -25,7 +25,7 @@ new_spinner() does not show the spinner, it just reserves the name and co-ordina
 
 **spinner_set(lr,name$)**
 
-This sets the spin of the spinner. set lr to true to have the spinner spin to the left or up. false for right or down.
+This sets the spin of the spinner. set lr to true to have the spinner spin to the left or down. false for right or up.
 
 
 **spinner_colors(r,g,b,r1,g1,b1)**
