@@ -151,8 +151,6 @@ MyCoolProcess.yab:
 
 	#!yab
 	// mimetype "application/x-vnd.MyCoolProcess"
-	dir$=attribute get$ "",""
-	dir$=dir$+"/"
 	// set DEBUG = 1 to print out all messages on the console
 	DEBUG = 0
 	openwindow()
