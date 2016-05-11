@@ -203,4 +203,4 @@ MyCoolProcess.yab:
 	leavingLoop = true
 	end sub
 
-Set the application flag on "myCoolProcess" to "Background app" with the FileType Tracker add-on so that the second program is not shown in the DeskBar.
+Set the application flag on "MyCoolProcess" to "Background app" with the FileType Tracker add-on so that the second program is not shown in the DeskBar.
