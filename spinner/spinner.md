@@ -64,27 +64,145 @@ Removes the spinner from the view.
 
 ## usage
 
-One typically adds the spinner to the view when the view is created:
+using the spinner can take two files:
 
-	VIEW 20,20 TO 120,120, "MyView", "MainWindow"
-	new_spinner(10,80,10,80,"MySpinner", "MyView")
+
+testspinner.yab:
+
+	#!yab
+	//mimetype "application/x-vnd.testspinner"
+
+	dir$=attribute get$ "",""
+	dir$=dir$+"/"
 	
-
-This is where the color or spin direction should be set if one needs to change it.
-
-
-When your process starts, set a flag variable to and display the spinner:
-
 	
-	display_spinner("MySpinner")
-	spin=true
-	my_cool_process()
-	spin=false
-	hide_spinner("MySpinner")
+	import spinner
+	// set DEBUG = 1 to print out all messages on the console
+	DEBUG = 0
+	
+	OpenWindow()
+	
+	
+	// Main Message Loop
+	dim msg$(1)
+	while(not leavingLoop)
+		nCommands = token(message$, msg$(), "|")
+	
+		for everyCommand = 1 to nCommands
+			if(DEBUG and msg$(everyCommand)<>"") print msg$(everyCommand)
+	
+			switch(msg$(everyCommand))
+				case "_QuitRequested"
+				case "MainWindow:_QuitRequested"
+					leavingLoop = true
+					break
+				case "start"
+					my_cool_process()
+					break
+				case "_Scripting:done"
+					spin=0
+					hide_spinner("MySpinner")
+					OPTION SET "start", "Enabled", true
+					draw flush "MyView"
+					break
+				case "_Scripting:start"	
+					window set "MainWindow","Activate"
+					OPTION SET "start", "Enabled", false
+					draw text 5,30, "MyCoolProcess","MyView"				
+					display_spinner("MySpinner")
+					spin=true
+					break
+				default
+				
+					
+			end switch
+				
+	
+		next everyCommand
+		if spin spinall()
+	
+	wend
+	CloseWindow()
+	end
+	
+	sub OpenWindow()
+		window open 100,100 to 300,300, "MainWindow", "Test Spinner"
+		button 65,10 to 135,40, "start", "start", "MainWindow"
+		WINDOW SET "MainWindow", "MoveTo", 300,300
+		Window Set "MainWindow", "Flags"	,"Not-Resizable Not-Zoomable"
+		VIEW 50,50 TO 150,150, "MyView", "MainWindow"
+		draw set "bgcolor" ,227,227,227, "MyView"
+		new_spinner(10,70,20,80,"MySpinner", "MyView")
+		return
+	end sub
+	
+	
+	// Close down the main window
+	sub CloseWindow()
+		window close "MainWindow"
+		return
+	end sub
+	
+	sub my_cool_process()
+	system(dir$+"MyCoolProcess &")
+	end sub
 
-Then in the main message loop of your program add:
+MyCoolProcess.yab:
 
-	if spin spinall()
+	#!yab
+	// mimetype "application/x-vnd.MyCoolProcess"
+	dir$=attribute get$ "",""
+	dir$=dir$+"/"
+	// set DEBUG = 1 to print out all messages on the console
+	DEBUG = 0
+	openwindow()
+	arived = message send "application/x-vnd.testspinner", "start"
+	// Main Message Loop
+	leavingLoop = false
+	dim msg$(1)
+	while(not leavingLoop)
+		nCommands = token(message$, msg$(), "|")
+	
+		for everyCommand = 1 to nCommands
+			if(DEBUG and msg$(everyCommand)<>"") print msg$(everyCommand)
+	
+			switch(msg$(everyCommand))
+				case "_QuitRequested"
+				case "hidden_window:_QuitRequested"
+					leavingLoop = true
+					break
+				default
+					
+			end switch
+			mcp()
+	
+		next everyCommand
+	
+	wend
+	closewindow()
+	
+	
+	end
+	sub closewindow()
+	window close "hidden_window"
+	end sub
+	
+	sub openwindow()
+	
+	WINDOW OPEN -100,-100 TO -90,-90, "hidden_window", ""
+	end sub
+	
+	sub mcp() // This represents the process that required the spinner.
+	
+	for x=1 to 500
+	sleep .01
+	next
+	
+	arived = message send "application/x-vnd.testspinner", "done"
+	
+	
+	
+	leavingLoop = true
+	end sub
 
-Now while my_cool_process() is running, the spinner will show on the bottom of MyView.
-
+Set the application flag on "myCoolProcess" to "Background app" with the FileType Tracker add-on sp that the second program is not shown in the DeskBar.
