@@ -115,7 +115,7 @@ testspinner.yab:
 						draw text 5,30, "MyCoolProcess","MyView"				
 						display_spinner("MySpinner")
 						spin=true
-					else// start message received, but never started the process. Send a stop message
+					else // start message received, but never started the process. Send a stop message
 							arived = message send "application/x-vnd.MyCoolProcess", "stop" 
 					endif 
 					break
