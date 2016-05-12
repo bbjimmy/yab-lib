@@ -97,6 +97,8 @@ testspinner.yab:
 					leavingLoop = true
 					break
 				case "start"
+					OPTION SET "start", "Enabled", false
+					st=1
 					my_cool_process()
 					break
 				case "_Scripting:done"
@@ -104,20 +106,21 @@ testspinner.yab:
 					hide_spinner("MySpinner")
 					OPTION SET "start", "Enabled", true
 					draw flush "MyView"
+					st=0
 					break
 				case "_Scripting:start"	
-					window set "MainWindow","Activate"
-					OPTION SET "start", "Enabled", false
-					draw text 5,30, "MyCoolProcess","MyView"				
-					display_spinner("MySpinner")
-					spin=true
+					if st=1 then
+						window set "MainWindow","Activate"
+						OPTION SET "start", "Enabled", false
+						draw text 5,30, "MyCoolProcess","MyView"				
+						display_spinner("MySpinner")
+						spin=true
+					else// start message received, but never started the process. Send a stop message
+							arived = message send "application/x-vnd.MyCoolProcess", "stop" 
+					endif 
 					break
 				default
-				
-					
 			end switch
-				
-	
 		next everyCommand
 		if spin spinall()
 	
@@ -144,17 +147,28 @@ testspinner.yab:
 	end sub
 	
 	sub my_cool_process()
-	system(dir$+"MyCoolProcess &")
+	system(dir$+"MyCoolProcess testspinner &")
 	end sub
 
 MyCoolProcess.yab:
 
 	#!yab
 	// mimetype "application/x-vnd.MyCoolProcess"
+	// insure that the program was called properly
+	x=peek("argument")
+	if x<>1 exit
+	x$=peek$("argument")
+	if x$<>"testspinner" exit
 	// set DEBUG = 1 to print out all messages on the console
 	DEBUG = 0
 	openwindow()
-	arived = message send "application/x-vnd.testspinner", "start"
+	// send message and be sure that it arives
+	arived = -1
+	while (arived <> 0)
+		arived = message send "application/x-vnd.testspinner", "start"
+		if arived = 1 exit
+	wend
+	sleep .25 // Give time for the calling app to abort by sending the stop message
 	// Main Message Loop
 	leavingLoop = false
 	dim msg$(1)
@@ -167,12 +181,14 @@ MyCoolProcess.yab:
 			switch(msg$(everyCommand))
 				case "_QuitRequested"
 				case "hidden_window:_QuitRequested"
+					case "_Scripting:stop"// received a stop message
+					stopped=1
 					leavingLoop = true
 					break
 				default
 					
 			end switch
-			mcp()
+			if stopped=0 mcp()
 	
 		next everyCommand
 	
@@ -196,11 +212,16 @@ MyCoolProcess.yab:
 	sleep .01
 	next
 	
-	arived = message send "application/x-vnd.testspinner", "done"
+	arived= -1
+	// send done message and be sure that the calling app receives it.
+	while (arived<>0)
+		arived = message send "application/x-vnd.testspinner", "done"
+		if arived = 1 exit
+	wend
 	
 	
 	
 	leavingLoop = true
 	end sub
 
-Set the application flag on "MyCoolProcess" to "Background app" with the FileType Tracker add-on so that the second program is not shown in the DeskBar.
+Set the application flag on "MyCoolProcess" to "Background app" with the FileType Tracker add-on so that the second program is not shown in the Deskbar.
