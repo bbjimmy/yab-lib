@@ -1,5 +1,5 @@
 //export sub getfont_family$(fonttype$)
-//returns the string needed bu draw set top set this font -- without the point size.
+//returns the string needed by draw set to set this font -- less the point size.
 
 //export sub getfont_size$(fonttype$)
 // returns the piont size of the font
