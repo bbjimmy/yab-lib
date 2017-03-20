@@ -1,0 +1,74 @@
+//export sub getfont_family$(fonttype$)
+//returns the string needed bu draw set top set this font -- without the point size.
+
+//export sub getfont_size$(fonttype$)
+// returns the piont size of the font
+
+//fonttype$ can be "bold", "book", or "mono"
+
+
+
+
+////////////////////////////////////
+
+sub getsystemfonts()
+local a$,num,x
+dim font$(1)
+a$=system$("message /boot/home/config/settings/system/app_server/fonts")
+num=split(a$,font$(),"\n")
+for x=2 to 10
+	a$=gststring$(font$(x))
+	if a$<>"" font$(x)=a$
+next
+font$(4)=getsize$(font$(4))
+font$(7)=getsize$(font$(7))
+font$(10)=getsize$(font$(10))
+
+end sub
+
+////////////////////////////////////
+
+sub gststring$(a$)
+local x
+x=instr(a$,chr$(34))
+a$=right$(a$,len(a$)-x)
+x=instr(a$,chr$(34))
+a$=left$(a$,x-1)
+return a$
+end sub
+
+////////////////////////////////////
+
+sub getsize$(a$)
+x=instr(a$,"(")
+a$=right$(a$,len(a$)-x)
+x=instr(a$,".")
+a$=left$(a$,x-1)
+return a$
+end sub
+
+////////////////////////////////////
+
+
+export sub getfont_family$(fonttype$)
+dim font$(1)
+x=arraysize(font$(),1)
+if x=1 getsystemfonts()
+fonttype$=lower$(fonttype$) 
+if fonttype$="book" return font$(2)+", "+font$(3)+", "
+if fonttype$="bold" return font$(5)+", "+font$(6)+", "
+if fonttype$="mono" return font$(8)+", "+font$(9)+", "
+end sub
+
+////////////////////////////////////
+
+
+export sub getfont_size$(fonttype$)
+dim font$(1)
+x=arraysize(font$(),1)
+if x=1 getsystemfonts()
+fonttype$=lower$(fonttype$) 
+if fonttype$="book" return font$(4)
+if fonttype$="bold" return font$(7)
+if fonttype$="mono" return font$(10)
+end sub
