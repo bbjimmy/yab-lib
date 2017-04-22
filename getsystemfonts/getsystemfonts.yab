@@ -82,6 +82,8 @@ if fonttype$="mono" return font$(10)
 
 end sub
 
+////////////////////////////////////
+
 sub fallback()
 font$(4)="12"
 font$(7)="12"
@@ -89,26 +91,23 @@ font$(10)="12"
 
 
 a$=system$("listfont -s")
-dim avfont$(1)
-num=split(a$,avfont$(),"\n")
+
+//dim avfont$(1)
+//num=split(a$,avfont$(),"\n")
 
 if instr(a$,"Noto Sans/Bold") then
-font$(5)="Noto Sans": font$(6)="Bold"
-font$(2)="Noto Sans": font$(3)="Regular"
-font$(8)="Noto Mono": font$(9)="Regular"
-return
+	font$(5)="Noto Sans": font$(6)="Bold"
+	font$(2)="Noto Sans": font$(3)="Regular"
+	font$(8)="Noto Mono": font$(9)="Regular"
+	return
 endif
 
 if instr(a$,"DejaVu Sans/Book") then
-font$(5)="DejaVu Sans": font$(6)="Bold"
-font$(2)="DejaVu Sans": font$(3)="Book"
-font$(8)="DejaVu Sans Mono": font$(9)="Book"
-
-return
+	font$(5)="DejaVu Sans": font$(6)="Bold"
+	font$(2)="DejaVu Sans": font$(3)="Book"
+	font$(8)="DejaVu Sans Mono": font$(9)="Book"
+	return
 endif
-
-
-print a$
 
 end sub
 
