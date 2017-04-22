@@ -17,18 +17,18 @@ dim font$(10)
 a$=system$("message /boot/home/config/settings/system/app_server/fonts")
 if instr(a$,"cannot open \"/boot/home/config/settings/system/app_server/fonts\" for reading") then
 
-fallback()
+	fallback()
 else
 
-print a$
-num=split(a$,font$(),"\n")
-for x=2 to 10
-	a$=gststring$(font$(x))
-	if a$<>"" font$(x)=a$
-next
-font$(4)=getsize$(font$(4))
-font$(7)=getsize$(font$(7))
-font$(10)=getsize$(font$(10))
+	num=split(a$,font$(),"\n")
+	for x=2 to 10
+		a$=gststring$(font$(x))
+		if a$<>"" font$(x)=a$
+	next
+	font$(4)=getsize$(font$(4))
+	font$(7)=getsize$(font$(7))
+	font$(10)=getsize$(font$(10))
+
 endif
 
 end sub
