@@ -1,6 +1,8 @@
 export sub new_spinner(hz,vt,width,ht, name$, view$)
 static number
+print "number ",number
 number = number+1
+print "number ",number
 dim spinner(number,5)
 dim spinnername$(number,2)
 
@@ -21,7 +23,16 @@ colors(2,2)=245
 colors(2,3)=245
 end sub
 
+export sub movespinner(h,v,name$)
 
+local x,i,number
+x=arraysize(spinnername$(),1)
+for i=1 to x
+if (spinnername$(i,1)=name$) number = i
+next
+spinner(number,1)=h
+spinner(number,2)=v
+end sub
 
 export sub display_spinner(name$)
 local x,i.number,view$, length,width
@@ -37,7 +48,7 @@ width=spinner(number,5)
 
 
 	view spinner(number,1),spinner(number,2) to spinner(number,1)+length,spinner(number,2)+width, name$+"_view", view$
-	//print spinner(number,1),spinner(number,2),spinner(number,1)+length,spinner(number,2)+width
+	print spinner(number,1),spinner(number,2),spinner(number,1)+length,spinner(number,2)+width,number,x
 	draw set 0,"HighSolidFill"
 	draw set "highcolor",180,180,180, name$+"_view"
 	draw rect 0,0 to length,width, name$+"_view"
@@ -48,7 +59,7 @@ width=spinner(number,5)
 	draw line 0,0 to 0,width , name$+"_view"
 	draw line 1,0 to length-1,0 , name$+"_view"
 	CANVAS 2,2 to length-2,width-2,  name$, name$+"_view"
-	
+	draw set 0,"HighSolidFill"
 
 	
 	
@@ -151,10 +162,17 @@ else
 	spinner(number,0)=p	
 endif	
 
-
+draw set 0, "255255255255255255255255"
 
 end sub
 
 
 
 
+
+
+
+//"254252248240224192128000""252248240224192128000001""248240224192128000001003""240224192128000001003007"
+//"224192128000001003007015""192128000001003007015031""128000001003007015031063""000001003007015031063127"
+//"001003007015031063127254""003007015031063127254252""007015031063127254252248""015031063127254252248240"
+//"031063127254252248240224""063127254252248240224192""127254252248240224192128"

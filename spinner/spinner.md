@@ -61,6 +61,10 @@ Only spin the spinner named name$
 
 Removes the spinner from the view.
 
+**movespinner(x,y,name$)**
+
+Moves the named spinner to the co-ortinates provided. 
+
 
 ## usage
 
